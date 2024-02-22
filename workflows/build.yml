@@ -1,0 +1,22 @@
+name: Build and Run Docker Image
+
+on:
+  push:
+    branches:
+      - master  # Changez ceci si votre branche par défaut a un nom différent
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout code
+
+    - name: Build Docker image
+      run: docker build . -t my-flask-app
+
+    - name: Run Docker container
+      run: docker run -d -p 5000:5000 my-flask-app
+
+    # Optionnel: Ajouter des étapes pour tester l'application si nécessaire
