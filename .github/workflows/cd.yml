@@ -1,4 +1,5 @@
-name: Continuous Developpement
+name: Continuous development
+
 on:
   push:
     branches:

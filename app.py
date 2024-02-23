@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request
-from api.apiTrefle import search_plants_by_name
-
+from api.apiTrefle import Api
 app = Flask(__name__)
 
-api_token = 'R40NoI9i4IqfybCHEqFpFHD2CUcjJkOT6CZMJZgAZ5o'
+
+api = Api()
 
 @app.route('/')
 def index():
@@ -11,8 +11,7 @@ def index():
 
 @app.route('/search', methods=['POST'])
 def search():
-    plant_name = request.form['plant_name']
-    search_results = search_plants_by_name(api_token, plant_name)
+    search_results = api.get_plants_by_name(request.form['plant_name'])
     if search_results:
         return render_template('index.html', search_results=search_results)
     else:

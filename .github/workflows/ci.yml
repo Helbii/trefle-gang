@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
     branches-ignore:
-      - master # Ignore les push sur la branche main
+      - master
 
 jobs:
   test:
