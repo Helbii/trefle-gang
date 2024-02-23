@@ -1,63 +1,42 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Search</title>
-    <style>
-        .plant-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        .plant-list-item {
-            margin-bottom: 10px;
-            margin-right: 20px;
-        }
-        .plant-details {
-            flex: 1;
-        }
-        .plant-image {
-            max-width: 200px;
-            float: right;
-            margin-left: 20px;
-        }
-    </style>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Plant Search</h1>
-    <form action="/search" method="post">
-        <input type="text" name="plant_name" placeholder="Enter plant name">
-        <button type="submit">Search</button>
+<body class="bg-gray-100">
+    <h1 class="text-3xl font-bold mb-4">Plant Search</h1>
+    <form action="/search" method="post" class="mb-4">
+        <input type="text" name="plant_name" placeholder="Enter plant name" class="border border-gray-300 px-4 py-2 rounded-md">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md ml-2">Search</button>
     </form>
     {% if search_results %}
-    <h2>Search Results:</h2>
-    <ul class="plant-list">
+    <h2 class="text-2xl font-bold mb-2">Search Results:</h2>
+    <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
         {% for plant in search_results %}
-        <li class="plant-list-item" onclick="showPlantDetails('{{ plant.image_url }}', '{{ plant.common_name }}', '{{ plant.scientific_name }}')">
-            {{ plant.common_name }} ({{ plant.scientific_name }})
+        <li class="border border-gray-300 p-4 rounded-md cursor-pointer hover:bg-gray-200" onclick="showPlantDetails('{{ plant.image_url }}', '{{ plant.common_name }}', '{{ plant.scientific_name }}')">
+            <div class="font-bold">{{ plant.common_name }}</div>
+            <div class="text-gray-500">{{ plant.scientific_name }}</div>
         </li>
         {% endfor %}
     </ul>
-    <div class="plant-details" id="plantDetails">
-        <h2>Plant Details</h2>
-        <p>Select a plant to view details</p>
+    <div class="mt-8" id="plantDetails">
+        <h2 class="text-2xl font-bold mb-2">Plant Details</h2>
+        <p class="text-gray-500">Select a plant to view details</p>
     </div>
     {% elif message %}
-    <p>{{ message }}</p>
+    <p class="text-red-500">{{ message }}</p>
     {% endif %}
 
     <script>
         function showPlantDetails(imageUrl, commonName, scientificName) {
             var plantDetails = document.getElementById('plantDetails');
-            var html = `<h2>${commonName} (${scientificName})</h2>`;
+            var html = `<h2 class="text-2xl font-bold mb-2">${commonName} (${scientificName})</h2>`;
             if (imageUrl) {
-                html += `<img class="plant-image" src="${imageUrl}" alt="${commonName} Image">`;
+                html += `<img class="max-w-xs rounded-lg" src="${imageUrl}" alt="${commonName} Image">`;
             }
             plantDetails.innerHTML = html;
         }
