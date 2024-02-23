@@ -1,0 +1,66 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Search</title>
+    <style>
+        .plant-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .plant-list-item {
+            margin-bottom: 10px;
+            margin-right: 20px;
+        }
+        .plant-details {
+            flex: 1;
+        }
+        .plant-image {
+            max-width: 200px;
+            float: right;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plant Search</h1>
+    <form action="/search" method="post">
+        <input type="text" name="plant_name" placeholder="Enter plant name">
+        <button type="submit">Search</button>
+    </form>
+    {% if search_results %}
+    <h2>Search Results:</h2>
+    <ul class="plant-list">
+        {% for plant in search_results %}
+        <li class="plant-list-item" onclick="showPlantDetails('{{ plant.image_url }}', '{{ plant.common_name }}', '{{ plant.scientific_name }}')">
+            {{ plant.common_name }} ({{ plant.scientific_name }})
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="plant-details" id="plantDetails">
+        <h2>Plant Details</h2>
+        <p>Select a plant to view details</p>
+    </div>
+    {% elif message %}
+    <p>{{ message }}</p>
+    {% endif %}
+
+    <script>
+        function showPlantDetails(imageUrl, commonName, scientificName) {
+            var plantDetails = document.getElementById('plantDetails');
+            var html = `<h2>${commonName} (${scientificName})</h2>`;
+            if (imageUrl) {
+                html += `<img class="plant-image" src="${imageUrl}" alt="${commonName} Image">`;
+            }
+            plantDetails.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
