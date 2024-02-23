@@ -13,7 +13,6 @@ class TestGetPlantsByName(unittest.TestCase):
         mock_get.return_value.status_code = 200
         api = Api()
         result = api.get_plants_by_name('coconut')
-        print(result)
         id = result[0]["id"]
         self.assertEqual(id, 236068)
 
