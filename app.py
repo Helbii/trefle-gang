@@ -1,13 +1,23 @@
 from flask import Flask, render_template, request
-from api.apiTrefle import Api
-app = Flask(__name__)
 
+from api.apiTrefle import Api
+from constants import specifications
+
+app = Flask(__name__)
 
 api = Api()
 
 @app.route('/')
-def index():
+def home():
+    return render_template('home.html')
+
+@app.route('/searchByName')
+def searchByName():
     return render_template('index.html')
+
+@app.route('/searchByCaracteristics')
+def searchByCaracteristics():
+    return render_template('searchByCaracteristics.html', specifications=specifications)
 
 @app.route('/search', methods=['POST'])
 def search():
