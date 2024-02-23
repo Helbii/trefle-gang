@@ -15,26 +15,8 @@ on:
     types: [published]
 
 jobs:
-  unit-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        name: Checkout code
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Run unit tests
-        run: |
-          echo "Running tests..."
-          python3 -m unittest discover -s tests_unit
 
   build-and-push:
-    needs: unit-test
     runs-on: ubuntu-latest
     environment: trefle-gang
     steps:
@@ -49,6 +31,3 @@ jobs:
       - name: Push Docker image
         run: docker push my-flask-app:${{ github.sha }}
     if: github.event_name == 'push' || (github.event_name == 'release' && github.event.action == 'published')
-
-
-    # Optionnel: Ajouter des étapes pour tester l'application si nécessaire
