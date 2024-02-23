@@ -1,22 +1,54 @@
-name: Build and Run Docker Image
+name: CI/CD Workflow
 
 on:
   push:
     branches:
-      - master  # Changez ceci si votre branche par défaut a un nom différent
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  release:
+    types: [published]
 
 jobs:
-  build:
+  unit-test:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-      name: Checkout code
+      - uses: actions/checkout@v2
+        name: Checkout code
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Run unit tests
+        run: |
+          echo "Running tests..."
+          python3 -m unittest discover -s tests_unit
 
-    - name: Build Docker image
-      run: docker build . -t my-flask-app
+  build-and-push:
+    needs: unit-test
+    runs-on: ubuntu-latest
+    environment: trefle-gang
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build . -t my-flask-app:${{ github.sha }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.USER_DOCK_HUB }}
+          password: ${{ secrets.PASS_DOCK_HUB }}
+      - name: Push Docker image
+        run: docker push my-flask-app:${{ github.sha }}
+    if: github.event_name == 'push' || (github.event_name == 'release' && github.event.action == 'published')
 
-    - name: Run Docker container
-      run: docker run -d -p 5000:5000 my-flask-app
 
     # Optionnel: Ajouter des étapes pour tester l'application si nécessaire
