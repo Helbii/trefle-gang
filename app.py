@@ -6,7 +6,11 @@ app = Flask(__name__)
 api_token = 'R40NoI9i4IqfybCHEqFpFHD2CUcjJkOT6CZMJZgAZ5o'
 
 @app.route('/')
-def index():
+def home():
+    return render_template('home.html')
+
+@app.route('/recherche')
+def recherche():
     return render_template('index.html')
 
 @app.route('/search', methods=['POST'])
