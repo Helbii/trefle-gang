@@ -1,13 +1,27 @@
 from flask import Flask, render_template, request
-from api.apiTrefle import Api
-app = Flask(__name__)
 
+from api.apiTrefle import Api
+from constants import specifications
+
+app = Flask(__name__)
 
 api = Api()
 
+
 @app.route('/')
-def index():
+def home():
+    return render_template('home.html')
+
+
+@app.route('/searchByName')
+def searchByName():
     return render_template('index.html')
+
+
+@app.route('/searchByCaracteristics')
+def searchByCaracteristics():
+    return render_template('searchByCaracteristics.html', specifications=specifications)
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -16,6 +30,18 @@ def search():
         return render_template('index.html', search_results=search_results)
     else:
         return render_template('index.html', message='No results found.')
+
+
+@app.route("/filter", methods=['POST'])
+def filter_plant():
+    carac1 = request.form.get('carac1')
+    carac2 = request.form.get('carac2')
+    carac3 = request.form.get('carac3')
+
+    filter = {"edible_part": [carac1, carac2, carac3]}
+    data = api.get_plants_by_fields(filters=filter)
+    print(data)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
