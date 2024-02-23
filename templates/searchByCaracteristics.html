@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutons Feuille</title>
+  <!-- Intégration de Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 flex flex-col justify-center items-center h-screen">
+    <!-- Barre de navigation fixe -->
+    <nav class="fixed top-0 left-0 w-full bg-green-500 flex justify-between px-4 py-2">
+        <a href="/" class="text-white flex items-center">
+            <i class="fas fa-leaf text-2xl mr-2"></i>
+            <span class="text-xl font-bold">Super-Trefle</span>
+        </a>
+    </nav>
+
+    <div class="mt-8">
+        <label for="carac1" class="mr-2">Caractéristique 1:</label>
+        <select id="carac1" name="carac1" class="px-2 py-1 border rounded">
+            <option value="">Sélectionner une caractéristique</option>
+            <!-- Boucle à travers la liste des caractéristiques pour générer les options -->
+            {% for carac in specifications %}
+                <option value="{{ carac }}">{{ carac }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mt-4">
+        <label for="carac2" class="mr-2">Caractéristique 2:</label>
+        <select id="carac2" name="carac2" class="px-2 py-1 border rounded">
+            <option value="">Sélectionner une caractéristique</option>
+            <!-- Boucle à travers la liste des caractéristiques pour générer les options -->
+            {% for carac in specifications %}
+                <option value="{{ carac }}">{{ carac }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mt-4">
+        <label for="carac3" class="mr-2">Caractéristique 3:</label>
+        <select id="carac3" name="carac3" class="px-2 py-1 border rounded">
+            <option value="">Sélectionner une caractéristique</option>
+            <!-- Boucle à travers la liste des caractéristiques pour générer les options -->
+            {% for carac in specifications %}
+                <option value="{{ carac }}">{{ carac }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    
+</body>
+</html>
