@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 from api.apiTrefle import Api
-from constants import specifications
+from constants import foliage, flower
 
 app = Flask(__name__)
 
@@ -20,7 +20,7 @@ def searchByName():
 
 @app.route('/searchByCaracteristics')
 def searchByCaracteristics():
-    return render_template('searchByCaracteristics.html', specifications=specifications)
+    return render_template('searchByCaracteristics.html', foliage=foliage, flower=flower)
 
 
 @app.route('/search', methods=['POST'])
@@ -34,13 +34,25 @@ def search():
 
 @app.route("/filter", methods=['POST'])
 def filter_plant():
-    carac1 = request.form.get('carac1')
-    carac2 = request.form.get('carac2')
-    carac3 = request.form.get('carac3')
-
-    filter = {"edible_part": [carac1, carac2, carac3]}
-    data = api.get_plants_by_fields(filters=filter)
-    print(data)
+    current_section = request.form['current_section']
+    filters = {}
+    if current_section == 'flower':
+        if request.form.get('color'):
+            filters['color'] = request.form['color']
+        elif request.form.get('conspicuous'):
+            filters['conspicuous'] = request.form['conspicuous']
+    elif current_section == 'foliage':
+        if request.form.get('texture'):
+            filters['texture'] = request.form['texture']
+        elif request.form.get('foliage_color'):
+            filters['foliage_color'] = request.form['foliage_color']
+        elif request.form.get('leaf_retention'):
+            filters['leaf_retention'] = request.form['leaf_retention']
+    data = api.get_plants_by_fields(filters=filters, current_section=current_section)
+    if data:
+        return render_template('filter.html', search_results=data["data"])
+    else:
+        return render_template('filter.html', message='No results found.')
 
 
 if __name__ == "__main__":
