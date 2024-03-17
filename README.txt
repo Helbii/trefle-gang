@@ -1,3 +1,5 @@
+Alexandre PASSE-COUTRIN Bilel BEN ROKIA Luca PEROUSSET
+
 Documentation de l'Application Super-Trefle
 
 Qu'est-ce que Super-Trefle ?
