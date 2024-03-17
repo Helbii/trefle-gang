@@ -22,6 +22,10 @@ def searchByName():
 def searchByCaracteristics():
     return render_template('searchByCaracteristics.html', foliage=foliage, flower=flower)
 
+@app.route('/searchGrowthandCare')
+def searchGrowthandInfo():
+    return render_template('growthandcare.html')
+
 
 @app.route('/search', methods=['POST'])
 def search():
